@@ -1,0 +1,22 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/style-home.css}">
+  <title th:text="${title} + ' | Furniture Orangery'"/>
+</head>
+<body>
+
+<!--Header-->
+
+<header th:insert="blocks/header :: header" class="header"></header>
+
+<!--Controls-->
+
+<a href="/admin/catalog">Catalog edit</a>
+<a href="/user">User edit</a>
+
+</body>
+</html>

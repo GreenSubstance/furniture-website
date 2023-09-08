@@ -1,0 +1,74 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style-profile.css}">
+    <title th:text="${title} + ' | Furniture Orangery'"/>
+</head>
+<body>
+
+<!--Header-->
+
+<header th:insert="blocks/header :: header" class="header"></header>
+
+<!--Profile-->
+
+<div class="profile">
+    <form th:action="@{/user/profile}" method="post">
+        <div><label> User Name : <input type="text" name="newUsername"/> </label></div>
+        <div><label> Password: <input type="password" name="newPassword"/> </label></div>
+        <div><label> Email: <input type="email" name="newEmail"/> </label></div>
+        <div><input type="submit" class="btn--search" value="Edit"/></div>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Order number</th>
+            <th>Placement date</th>
+            <th>Delivery date</th>
+            <th>Total</th>
+            <th>State</th>
+            <th>Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.order_id}"/>
+            <td th:text="${#dates.format(order.placement_date, 'dd-MMM-yyyy')}"/>
+            <td th:text="${#dates.format(order.delivery_date, 'dd-MMM-yyyy')}"/>
+            <td th:text="${order.total}"/>
+            <td th:text="${order.order_state}"/>
+            <td>
+                <a href="#">Details
+                    <span class="tooltip">
+                    <table>
+                        <thread>
+                        <tr>
+                            <th>ID</th>
+                            <th>Quantity</th>
+                            <th>Fabric category</th>
+                            <th>Sum</th>
+                        </tr>
+                        </thread>
+                        <tbody>
+                        <tr th:each="item : ${order.contents}">
+                            <td th:text="${item.item_id}"/>
+                            <td th:text="${item.quantity}"/>
+                            <td th:text="${item.fabric_category}"/>
+                            <td th:text="${item.sum_price}"/>
+                        </tr>
+                        </tbody>
+                    </table>
+                </span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

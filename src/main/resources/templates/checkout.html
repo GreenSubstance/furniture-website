@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/style-checkout.css}">
+  <title th:text="${title} + ' | Furniture Orangery'"/>
+</head>
+
+<body>
+
+<!--Header-->
+<header th:insert="blocks/header :: header" class="header"></header>
+
+<!-- Checkout -->
+
+<div class="checkout">
+  <form th:action="@{/cart/checkout}" method="post">
+    <table>
+      <thead>
+      <tr>
+        <th>Item name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Fabric category</th>
+        <th>Color</th>
+        <th>Subtotal</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="cart_list" th:each="cartItem : ${listUserCart}">
+        <td><p th:text="${cartItem.item.item_name}"/></td>
+        <td><p th:text="${cartItem.qnt}"/></td>
+        <td><p th:text="${cartItem.price}"/></td>
+        <td><p th:text="${cartItem.fabric_cat}"/></td>
+        <td><p th:text="${cartItem.color_name}"/></td>
+        <td><p th:text="${cartItem.subtotal}"/></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <p>Total: </p><p th:text="${#aggregates.sum(listUserCart.![subtotal])}"/>
+    <input type="hidden" name="total" th:value="${#aggregates.sum(listUserCart.![subtotal])}">
+    <input type="hidden" name="upfront_fee" th:value="${#aggregates.sum(listUserCart.![subtotal])}">
+    <p>Delivery fee: 2000</p><input type="hidden" name="delivery_fee" value="2000">
+    <p>Address: </p><input type="text" name="delivery_address">
+    <input type="submit" class="btn--search" value="Checkout">
+  </form>
+</div>
+
+</body>
+</html>

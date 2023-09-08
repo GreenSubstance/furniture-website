@@ -1,0 +1,50 @@
+
+body {
+    margin: 0;
+
+    font-family: 'Exo 2', sans-serif;
+    font-size:  24px;
+    color: #000000;
+    -webkit-font-smoothing: antialiased;
+}
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 400px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+.submit-btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Add a hover effect for buttons */
+.submit-btn:hover {
+ opacity: 0.8;
+}
+
+.form-structor {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.signup {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+a {
+
+}

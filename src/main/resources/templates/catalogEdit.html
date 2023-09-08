@@ -1,0 +1,57 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/style-catalog.css}">
+  <title th:text="${title} + ' | Furniture Orangery'"/>
+</head>
+
+<body>
+
+<!--Header-->
+<header th:insert="blocks/header :: header" class="header"></header>
+
+<!-- Catalog Edit -->
+
+<form th:action="@{/admin/catalog}" th:method="post" th:object="${item}">
+  <div><label> Name : <input type="text" th:field="*{item_name}"/> </label></div>
+  <div><label> Desc: <input type="text" th:field="*{item_desc}"/> </label></div>
+  <div><label> Img path: <input type="text" th:field="*{img_path}"/> </label></div>
+  <div><label> Quantity: <input type="number" th:field="*{qnt}"/> </label></div>
+  <div><label> Type: <input type="number" th:field="*{sofa_type}"/> </label></div>
+  <div><label> Length: <input type="number" th:field="*{diml}"/> </label></div>
+  <div><label> Width: <input type="number" th:field="*{dimw}"/> </label></div>
+  <div><label> Height: <input type="number" th:field="*{dimh}"/> </label></div>
+  <div><label> Length Sl: <input type="number" th:field="*{diml_sleep}"/> </label></div>
+  <div><label> Width Sl: <input type="number" th:field="*{dimw_sleep}"/> </label></div>
+  <div><label> Height Sl: <input type="number" th:field="*{dimh_sleep}"/> </label></div>
+  <div><label> Depth Sit: <input type="number" th:field="*{dimd_seat}"/> </label></div>
+  <div><label> Height Sit: <input type="number" th:field="*{dimh_seat}"/> </label></div>
+  <div><input type="submit" name="action" value="save"/></div>
+</form>
+
+<form th:action="@{/admin/catalog}" th:method="post">
+<table>
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Image</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="item : ${items}">
+    <td th:text="${item.item_id}"/>
+    <td th:text="${item.item_name}"/>
+    <td th:text="${item.img_path}"/>
+    <td><a th:href="@{/admin/catalog/{id}(id=${item.item_id})}">edit</a></td>
+    <td><a th:href="|@{/admin/catalog/delete/{id}(id=${item.item_id})}|">Delete</a></td>
+  </tr>
+  </tbody>
+</table>
+</form>
+
+</body>
+</html>

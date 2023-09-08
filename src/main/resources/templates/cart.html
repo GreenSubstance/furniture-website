@@ -1,0 +1,56 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style-cart.css">
+  <title th:text="${title} + ' | Furniture Orangery'"/>
+</head>
+
+<body>
+
+<!--Header-->
+<header th:insert="blocks/header :: header" class="header"></header>
+
+<!-- Cart -->
+
+<div class="cart">
+  <form class="cart_content" th:action="@{/cart}" method="post" th:unless="${#lists.isEmpty(listUserCart)}">
+    <table>
+      <thead>
+      <tr>
+        <th>Item name</th>
+        <th>Item image</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Fabric category</th>
+        <th>Color</th>
+        <th>Subtotal</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="cartItem : ${listUserCart}">
+        <td><a th:href="@{/product/{id}(id=${cartItem.item.item_id})}"><p th:text="${cartItem.item.item_name}"/></a></td>
+        <td><img class ="item_img" th:src="@{${cartItem.item.img_path}}"></td>
+        <td><p th:text="${cartItem.qnt}"/></td>
+        <td><p th:text="${cartItem.price}"/></td>
+        <td><p th:text="${cartItem.fabric_cat}"/></td>
+        <td><p th:text="${cartItem.color_name}"/></td>
+        <td><p th:text="${cartItem.subtotal}"/></td>
+        <td><input type="hidden" name="item_id" th:value="${cartItem.item.item_id}"></td>
+        <td><a th:href="|@{/cart/{id}(id=${cartItem.item.item_id})}|">Delete</a></td>
+      </tr>
+      </tbody>
+    </table>
+    <p>Subtotal:</p>
+    <p th:text="${#aggregates.sum(listUserCart.![subtotal])}"/>
+    <a href="/cart/checkout">Checkout</a>
+  </form>
+
+  <p th:if="${#lists.isEmpty(listUserCart)}">No items in cart</p>
+</div>
+
+</body>
+</html>

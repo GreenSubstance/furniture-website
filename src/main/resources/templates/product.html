@@ -1,0 +1,102 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/style-product-page.css}">
+  <title th:text="${title} + ' | Furniture Orangery'"/>
+</head>
+
+<body>
+
+<!--Header-->
+<header th:insert="blocks/header :: header" class="header"></header>
+
+<!-- Product -->
+<div class="main_container">
+  <div class="container">
+
+    <div class="item_info">
+      <img class ="item_img" th:src="@{'/' + ${item.img_path}}">
+      <div class="desc_container">
+        <p class="item_name" th:text="${item.item_name}"/>
+        <p class="item_desc" th:text="${item.item_desc}"/>
+        <tr class="available_styles" th:each="st : ${item.item_styles}">
+          <p class="item_style" th:text="${st.style_name}"/>
+        </tr>
+      </div>
+
+      <div class="features_container">
+        <div class="dims_container">
+          <p class="item_dims">Габариты:</p>
+          <p class="item_dims" th:text="${item.diml} + ' x ' + ${item.dimw} + ' x ' + ${item.dimh}"/>
+          <p class="item_dims">Спальное место:</p>
+          <p class="item_dims" th:text="${item.diml_sleep} + ' x ' + ${item.dimw_sleep} + ' x ' + ${item.dimh_sleep}"/>
+          <p class="item_dims">Посадачное место:</p>
+          <p class="item_dims" th:text="${item.dimd_seat} + ' x ' + ${item.dimh_seat}"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="item_info_moving">
+      <form th:action="@{'/product/' + ${item.item_id}}" method="post" class="item_info_moving">
+        <p class="item_name_m" th:text="${item.item_name}"/>
+        <p class="item_price_m" id="price_field" th:value="${item.prices[0]}" th:text="${#numbers.formatInteger(item.prices[0],3,'DEFAULT')} + ' ₽'"/>
+        <div class="select">
+          <select id="fabric_cat" name="fabric_cat" onchange="changePrice(this)">
+            <option class="cat_option" th:each="cat : ${item.fabric_categories}" th:value="${cat}" th:text="'Категория ' + ${cat}"/>
+          </select>
+        </div>
+        <div class="color_select">
+          <ul>
+            <li th:each="color : ${item.item_colors}">
+              <input type="radio" name="color_name" class="color_radio" th:value="${color.color_name}" th:style="'ul li::before {content: &quot;\2022&quot;; color: #' + ${color.color_hex} + ';font-weight: bold;display: inline-block;width: 0.5em; margin-left: -1em;}'">
+              <label th:text="${color.color_name}"/>
+            </li>
+          </ul>
+
+          <!--
+          <tr th:each="color : ${item.item_colors}">
+
+            <p class="item_color_name" th:text="${color.color_name}"/>
+            <p class="item_color_hex" th:text="${color.color_hex}"/>
+
+            <button class="btn-color" type="button" th:value="${color.color_hex}" th:style="'display: block; vertical-align: top; height : 50px; width : 50px ; border: 0; border-radius: 50%; margin: 10px; cursor: pointer; text-decoration: none; transition: background .1s linear; background-color: #' + ${color.color_hex}"></button>
+          </tr>
+          -->
+        </div>
+        <input type="number" name="qnt" id="item_quantity" value="1" min="1" max="100">
+        <input type="number" name="price" id="price_input" th:value="${item.prices[0]}" hidden>
+        <button class="btn-cart" type="submit">Add to cart</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+</body>
+
+<script th:inline="javascript">
+  function changePrice(val) {
+    var listPrices = [[${#numbers.listFormatInteger(item.prices,3,'DEFAULT')}]];
+    var listPricesInt = [[${item.prices}]];
+    var num = val.value;
+    document.getElementById("price_input").value = listPricesInt[num];
+    document.getElementById("price_field").innerHTML = listPrices[num] + ' ₽';
+  }
+</script>
+<script th:src="@{/static/quantity_control.js}"></script>
+
+
+</html>
+
+
+
+
+<!--
+<tr th:each="cat : ${item.fabric_categories}">
+  <p th:text="${item.prices[__${cat}__]}">
+  <p th:text="${cat}"/>
+</tr>
+-->

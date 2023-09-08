@@ -1,0 +1,129 @@
+<!doctype html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style-home.css}">
+    <title th:text="${title} + ' | Furniture Orangery'"/>
+</head>
+<body>
+
+<!--Header-->
+
+<header th:insert="blocks/header :: header" class="header"></header>
+
+<!--Intro-->
+
+<div class="intro">
+    <div class="container">
+        <div class="intro_content">
+            <div class="intro_text">
+                <h1 class="intro_title">Подберите диван для интерьера мечты</h1>
+                <a class="btn btn--orange" href="#">Посмотреть каталог</a>
+                <ul class="intro_subtitle">
+                    <li class="subtitle_item">г. Москва, ул. Грузинский Вал, д. 40</li>
+                    <li class="subtitle_item">Пн - Вс, 9:00 - 22:00</li>
+                    <li class="subtitle_item">Тел: 8 (999) 111-22-33,</li>
+                    <li class="subtitle_item">8 (999) 444-55-66</li>
+                </ul>
+            </div>
+            <div class="intro_pictures">
+                <img class="intro_sofa" src="img/intro-sofa.png" alt="sofa">
+                <img class="intro_lamp" src="img/intro-lamp.jpg" alt="lamp">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Styles-->
+
+<div class="styles">
+    <div class="style_type">
+        <img class="style_img" src="img/styles/eclectic.jpg" alt="">
+        <div class="style_content">
+            <p class="style_name">Эклектика</p>
+            <p class="style_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+    <div class="style_type">
+        <img class="style_img" src="img/styles/high-tech.jpg" alt="">
+        <div class="style_content">
+            <p class="style_name">Хай-тек</p>
+            <p class="style_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+    <div class="style_type">
+        <img class="style_img" src="img/styles/loft.jpg" alt="">
+        <div class="style_content">
+            <p class="style_name">Лофт</p>
+            <p class="style_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+    <div class="style_type">
+        <img class="style_img" src="img/styles/minimalism.jpg" alt="">
+        <div class="style_content">
+            <p class="style_name">Минимализм</p>
+            <p class="style_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+    <div class="style_type">
+        <img class="style_img" src="img/styles/filler.png" alt="">
+    </div>
+
+    <div class="style_type">
+        <img class="style_img" src="img/styles/modern-classic.jpg" alt="">
+        <div class="style_content">
+            <p class="style_name">Современная классика</p>
+            <p class="style_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+    <div class="style_type">
+        <img class="style_img" src="img/styles/modern.jpg" alt="">
+        <div class="style_content">
+            <p class="style_name">Современный</p>
+            <p class="style_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+    <div class="style_type">
+        <img class="style_img" src="img/styles/neoclassic.jpg" alt="">
+        <div class="style_content">
+            <p class="style_name">Неоклассика</p>
+            <p class="style_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+    <div class="style_type">
+        <img class="style_img" src="img/styles/romantism.png" alt="">
+        <div class="style_content">
+            <p class="style_name">Романтизм</p>
+            <p class="style_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+    </div>
+
+</div>
+
+<!--About us-->
+
+<div class="about">
+    <div class="container">
+        <div class="about_content">
+            <div class="about_text">
+                <h1 class="about_title">Немного о нас</h1>
+                <p class="about_desc">Мебельный салон “Оранжерея мебели”. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p class="about_desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+
+            <img class="about_img" src="img/inside.jpg" alt="">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
