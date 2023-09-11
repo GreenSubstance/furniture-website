@@ -3,20 +3,16 @@ package com.storeproject.demostore.controllers;
 import com.storeproject.demostore.dto.request.CartItemDto;
 import com.storeproject.demostore.dto.request.OrderDto;
 import com.storeproject.demostore.exceptions.BadRequestException;
-import com.storeproject.demostore.models.Order;
 import com.storeproject.demostore.models.User;
-import com.storeproject.demostore.models.UserCart;
 import com.storeproject.demostore.services.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -33,7 +29,7 @@ public class CartController {
             throw new BadRequestException("user not logged in");
         }
 
-        Map<CartItemDto, Integer> cart = cartService.getCart();
+        Map<Integer, CartItemDto> cart = cartService.getCart();
         model.addAttribute("listUserCart", cart);
         System.out.println(cart);
 
@@ -42,21 +38,19 @@ public class CartController {
 
     @GetMapping("/cart/{item_id}")
     public String removeItemFromCart(@AuthenticationPrincipal User user,
-                                     @RequestBody CartItemDto itemDto) {
+                                     @PathVariable(name = "item_id") Integer itemId) {
         if (user == null) {
             return "Log in";
         }
-        cartService.removeItem(itemDto);
-
+        cartService.removeItem(itemId);
         return "redirect:/cart";
     }
 
     @GetMapping("/cart/checkout")
     public String checkout(Model model, @AuthenticationPrincipal User user) {
-        Map<CartItemDto, Integer> cart = cartService.getCart();
+        Map<Integer, CartItemDto> cart = cartService.getCart();
         model.addAttribute("listUserCart", cart);
         model.addAttribute("orderInfo", new OrderDto());
-
         return "/checkout";
     }
 

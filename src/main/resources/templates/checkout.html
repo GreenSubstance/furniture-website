@@ -30,23 +30,23 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="cart_list" th:each="cartItem : ${listUserCart}">
-        <td><p th:text="${cartItem.key.itemName}"/></td>
-        <td><p th:text="${cartItem.value}"/></td>
-        <td><p th:text="${cartItem.key.price}"/></td>
-        <td><p th:text="${cartItem.key.fabricCategory}"/></td>
-        <td><p th:text="${cartItem.key.colorName}"/></td>
-        <td><p th:text="${cartItem.key.subtotal}"/></td>
+      <tr class="cart_list" th:each="cartItem : ${listUserCart.values}">
+        <td><p th:text="${cartItem.itemName}"/></td>
+        <td><p th:text="${cartItem.qnt}"/></td>
+        <td><p th:text="${cartItem.price}"/></td>
+        <td><p th:text="${cartItem.fabricCategory}"/></td>
+        <td><p th:text="${cartItem.colorName}"/></td>
+        <td><p th:text="${cartItem.subtotal}"/></td>
       </tr>
       </tbody>
     </table>
 
-    <p>Total: </p><p th:text="${#aggregates.sum(listUserCart.keySet.![subtotal])}"/>
+    <p>Total: </p><p th:text="${#aggregates.sum(listUserCart.values.![subtotal])}"/>
     <p>Delivery fee: 2000</p><input type="hidden" name="deliveryFee" th:value="2000" th:with="deliveryFee=*{deliveryFee}">
     <p>Address: </p><input type="text" name="address" th:with="address=*{address}">
 
-    <input type="hidden" name="total" th:value="${#aggregates.sum(listUserCart.keySet.![subtotal])}" th:with="total=*{total}">
-    <input type="hidden" name="upfrontFee" th:value="${#aggregates.sum(listUserCart.keySet.![subtotal])}" th:with="upfrontFee=*{upfrontFee}">
+    <input type="hidden" name="total" th:value="${#aggregates.sum(listUserCart.values.![subtotal])}" th:with="total=*{total}">
+    <input type="hidden" name="upfrontFee" th:value="${#aggregates.sum(listUserCart.values.![subtotal])}" th:with="upfrontFee=*{upfrontFee}">
 
     <input type="submit" class="btn--search" value="Checkout">
   </form>

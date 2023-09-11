@@ -6,7 +6,6 @@ import com.storeproject.demostore.models.Item;
 import com.storeproject.demostore.models.User;
 import com.storeproject.demostore.services.CartService;
 import com.storeproject.demostore.services.ItemService;
-import com.storeproject.demostore.services.UserCartService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

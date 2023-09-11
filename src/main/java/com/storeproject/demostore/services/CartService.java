@@ -19,6 +19,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -29,28 +31,32 @@ public class CartService {
     final OrderRepo orderRepo;
     final OrderContentRepo orderContentRepo;
 
-    final Map<CartItemDto, Integer> cart = new HashMap<>(); //item, quantity
+    final Map<Integer, CartItemDto> cart = new HashMap<>(); //id, item
+    AtomicInteger idGen = new AtomicInteger(0);
 
 
-    public Map<CartItemDto, Integer> getCart() {
+    public Map<Integer, CartItemDto> getCart() {
         return cart;
     }
 
     public void addItem(CartItemDto itemToAdd) {
 
-        cart.merge(itemToAdd, itemToAdd.getQnt(), Integer::sum);
+        Optional<Integer> itemId = cart
+                .entrySet()
+                .stream()
+                .filter(entry -> itemToAdd.equals(entry.getValue()))
+                .map(Map.Entry::getKey)
+                .findAny();
 
-        /*
-        if (cart.containsKey(item)) {
-            cart.replace(item, cart.get(item) + 1);
-        } else {
-            cart.put(item, 1);
+        if (itemId.isPresent()) {
+            CartItemDto item = cart.get(itemId.get());
+            item.setQnt(item.getQnt() + itemToAdd.getQnt());
         }
-        */
+        else cart.put(idGen.getAndIncrement(), itemToAdd);
     }
 
-    public void removeItem(CartItemDto item) {
-        cart.remove(item);
+    public void removeItem(Integer itemId) {
+        cart.remove(itemId);
     }
 
     @Transactional
@@ -58,10 +64,10 @@ public class CartService {
 
         Order order = OrderMapper.toEntity(orderInfo, user);
         orderRepo.save(order);
-
-        cart.forEach((k, v)
-                -> orderContentRepo.save(OrderContentMapper.toEntity(k, v, order)));
-
+        cart
+                .values()
+                .forEach(v ->
+                        orderContentRepo.save(OrderContentMapper.toEntity(v, order)));
         cart.clear();
     }
 }
