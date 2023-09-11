@@ -29,16 +29,16 @@ public class CartService {
     final OrderRepo orderRepo;
     final OrderContentRepo orderContentRepo;
 
-    final Map<Long, CartItemDto> cart = new HashMap<>(); //item, quantity
+    final Map<CartItemDto, Integer> cart = new HashMap<>(); //item, quantity
 
-    public Map<Long, CartItemDto> getCart() {
+
+    public Map<CartItemDto, Integer> getCart() {
         return cart;
     }
 
-    public void addItem(Long id, CartItemDto itemToAdd) {
+    public void addItem(CartItemDto itemToAdd) {
 
-        if (cart.containsKey(id)) cart.get(id).setQnt(itemToAdd.getQnt());
-        else cart.put(id, itemToAdd);
+        cart.merge(itemToAdd, itemToAdd.getQnt(), Integer::sum);
 
         /*
         if (cart.containsKey(item)) {
@@ -49,8 +49,8 @@ public class CartService {
         */
     }
 
-    public void removeItem(Long id) {
-        cart.remove(id);
+    public void removeItem(CartItemDto item) {
+        cart.remove(item);
     }
 
     @Transactional

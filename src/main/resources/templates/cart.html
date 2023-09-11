@@ -32,20 +32,28 @@
       </thead>
       <tbody>
       <tr th:each="cartItem : ${listUserCart}">
+        <!--
         <td><a th:href="@{/product/{id}(id=${cartItem.item.item_id})}"><p th:text="${cartItem.item.item_name}"/></a></td>
         <td><img class ="item_img" th:src="@{${cartItem.item.img_path}}"></td>
-        <td><p th:text="${cartItem.qnt}"/></td>
-        <td><p th:text="${cartItem.price}"/></td>
-        <td><p th:text="${cartItem.fabric_cat}"/></td>
-        <td><p th:text="${cartItem.color_name}"/></td>
-        <td><p th:text="${cartItem.subtotal}"/></td>
+        -->
+        <td><p th:text="${cartItem.key.itemName}"/></td>
+        <td><img class ="item_img" th:src="@{${cartItem.key.imgPath}}"></td>
+        <td><p th:text="${cartItem.value}"/></td>
+        <td><p th:text="${cartItem.key.price}"/></td>
+        <td><p th:text="${cartItem.key.fabricCategory}"/></td>
+        <td><p th:text="${cartItem.key.colorName}"/></td>
+        <td><p th:text="${cartItem.key.subtotal}"/></td>
+        <!--
         <td><input type="hidden" name="item_id" th:value="${cartItem.item.item_id}"></td>
         <td><a th:href="|@{/cart/{id}(id=${cartItem.item.item_id})}|">Delete</a></td>
+        -->
       </tr>
       </tbody>
     </table>
     <p>Subtotal:</p>
+    <!--
     <p th:text="${#aggregates.sum(listUserCart.![subtotal])}"/>
+    -->
     <a href="/cart/checkout">Checkout</a>
   </form>
 

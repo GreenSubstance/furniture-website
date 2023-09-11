@@ -16,8 +16,9 @@ import java.util.*;
 @Table(name = "orders")
 public class Order {
     @Id
+    @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long order_id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -27,12 +28,22 @@ public class Order {
     @OneToMany(mappedBy = "order", orphanRemoval = true) //eager
     List<OrderContent> contents = new ArrayList<>();
 
+    @Column(name = "placement_date")
     Date placementDate;
+
+    @Column(name = "delivery_date")
     Date deliveryDate;
+
+    @Column(name = "delivery_address")
     String deliveryAddress;
-    Integer upfront;
+
+    @Column(name = "delivery_fee")
     Integer deliveryFee;
-    Integer total;
+
+    @Column(name = "order_state")
     OrderState orderState;
+
+    Integer upfront;
+    Integer total;
 
 }

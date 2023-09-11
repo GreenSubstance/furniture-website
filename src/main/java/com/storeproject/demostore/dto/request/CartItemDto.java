@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.beans.Transient;
 import java.util.Objects;
 
 @Getter
@@ -15,6 +16,12 @@ import java.util.Objects;
 public class CartItemDto {
 
     Long id;
+
+    @JsonProperty("item_name")
+    String itemName;
+
+    @JsonProperty("img_path")
+    String imgPath;
 
     @JsonProperty("fabric_category")
     Integer fabricCategory;
@@ -29,4 +36,35 @@ public class CartItemDto {
 
     @JsonProperty("quantity")
     Integer qnt;
+
+    @Transient
+    public Integer getSubtotal() {
+        return price * qnt;
+    }
+
+    /* qnt isn't involved */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItemDto that = (CartItemDto) o;
+        return id.equals(that.id) && Objects.equals(fabricCategory, that.fabricCategory) && Objects.equals(price, that.price) && Objects.equals(colorId, that.colorId) && Objects.equals(colorName, that.colorName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fabricCategory, price, colorId, colorName);
+    }
+
+    @Override
+    public String toString() {
+        return "CartItemDto{" +
+                "id=" + id +
+                ", fabricCategory=" + fabricCategory +
+                ", price=" + price +
+                ", colorId=" + colorId +
+                ", colorName='" + colorName + '\'' +
+                ", qnt=" + qnt +
+                '}';
+    }
 }

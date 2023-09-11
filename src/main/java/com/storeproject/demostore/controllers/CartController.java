@@ -33,36 +33,38 @@ public class CartController {
             throw new BadRequestException("user not logged in");
         }
 
-        Map<Long, CartItemDto> cart = cartService.getCart();
+        Map<CartItemDto, Integer> cart = cartService.getCart();
         model.addAttribute("listUserCart", cart);
+        System.out.println(cart);
 
         return "cart";
     }
 
     @GetMapping("/cart/{item_id}")
     public String removeItemFromCart(@AuthenticationPrincipal User user,
-                                     @PathVariable(name = "item_id") Long id) {
+                                     @RequestBody CartItemDto itemDto) {
         if (user == null) {
             return "Log in";
         }
-        cartService.removeItem(id);
+        cartService.removeItem(itemDto);
 
         return "redirect:/cart";
     }
 
     @GetMapping("/cart/checkout")
     public String checkout(Model model, @AuthenticationPrincipal User user) {
-        Map<Long, CartItemDto> cart = cartService.getCart();
+        Map<CartItemDto, Integer> cart = cartService.getCart();
         model.addAttribute("listUserCart", cart);
+        model.addAttribute("orderInfo", new OrderDto());
 
         return "/checkout";
     }
 
     @PostMapping("/cart/checkout")
-    public String checkoutFormOrder(Model model, @AuthenticationPrincipal User user,
-                                    @RequestBody OrderDto orderDto) {
+    public String checkoutFormOrder(@AuthenticationPrincipal User user,
+                                    @ModelAttribute("orderInfo") OrderDto orderDto) {
 
         cartService.checkout(user, orderDto);
-        return "redirect:/catalog";
+        return "redirect:/user/profile";
     }
 }

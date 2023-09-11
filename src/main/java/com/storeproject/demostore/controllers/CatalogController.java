@@ -41,17 +41,17 @@ public class CatalogController {
     public String product(@PathVariable(name = "id") Long productId, Model model) {
         model.addAttribute("title", "Catalog");
         model.addAttribute("item", itemService.getById(productId));
+        model.addAttribute("cartItem", new CartItemDto());
         return "product";
     }
 
-    @PostMapping("/product/{id}")
+    @PostMapping("/product")
     public void addItemToCart(@AuthenticationPrincipal User user,
-                              @PathVariable(name = "id") Long id,
-                              @RequestBody CartItemDto cartItemDto) {
+                              @ModelAttribute("cartItem") CartItemDto cartItemDto) {
         if (user == null) {
             throw new BadRequestException("user not logged in");
         }
-        cartService.addItem(id, cartItemDto);
+        cartService.addItem(cartItemDto);
     }
 
     /*

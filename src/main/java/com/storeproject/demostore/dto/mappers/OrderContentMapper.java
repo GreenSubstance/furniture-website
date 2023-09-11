@@ -23,15 +23,15 @@ public class OrderContentMapper {
         return null;
     }
 
-    public static OrderContent toEntity(Long itemId, CartItemDto cartItemDto, Order order) {
+    public static OrderContent toEntity(CartItemDto cartItemDto, Integer qnt, Order order) {
 
         return OrderContent.builder()
-                .item(itemRepo.getReferenceById(itemId))
+                .item(itemRepo.getReferenceById(cartItemDto.getId()))
                 .order(order)
-                .quantity(cartItemDto.getQnt())
+                .quantity(qnt)
                 .fabricCategory(cartItemDto.getFabricCategory())
                 .color(colorsRepo.getReferenceById(cartItemDto.getColorId()))
-                .sumPrice(cartItemDto.getPrice() * cartItemDto.getQnt())
+                .sumPrice(cartItemDto.getPrice() * qnt)
                 .build();
     }
 

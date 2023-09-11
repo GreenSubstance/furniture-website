@@ -18,7 +18,7 @@ public class OrderContent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "content_order_id")
+    @Column(name = "order_content_id")
     Long id;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -38,6 +38,6 @@ public class OrderContent {
     Integer sumPrice;
 
     @ManyToOne
-    @JoinColumn(name = "color_id")
+    @JoinColumn(name = "color")
     Color color;
 }
