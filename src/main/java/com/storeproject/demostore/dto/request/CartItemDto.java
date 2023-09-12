@@ -1,6 +1,5 @@
 package com.storeproject.demostore.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,25 +15,12 @@ import java.util.Objects;
 public class CartItemDto {
 
     Long id;
-
-    @JsonProperty("item_name")
     String itemName;
-
-    @JsonProperty("img_path")
     String imgPath;
-
-    @JsonProperty("fabric_category")
     Integer fabricCategory;
-
     Integer price;
-
-    @JsonProperty("color_id")
     Long colorId;
-
-    @JsonProperty("color_name")
     String colorName;
-
-    @JsonProperty("quantity")
     Integer qnt;
 
     @Transient

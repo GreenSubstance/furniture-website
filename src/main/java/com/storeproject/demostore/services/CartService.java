@@ -32,7 +32,7 @@ public class CartService {
     final OrderContentRepo orderContentRepo;
 
     final Map<Integer, CartItemDto> cart = new HashMap<>(); //id, item
-    AtomicInteger idGen = new AtomicInteger(0);
+    final AtomicInteger idGen = new AtomicInteger(0);
 
 
     public Map<Integer, CartItemDto> getCart() {
@@ -69,5 +69,6 @@ public class CartService {
                 .forEach(v ->
                         orderContentRepo.save(OrderContentMapper.toEntity(v, order)));
         cart.clear();
+        idGen.set(0);
     }
 }

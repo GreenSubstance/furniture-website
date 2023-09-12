@@ -5,9 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -43,13 +41,13 @@ public class Item {
     @ElementCollection
     @CollectionTable(name = "sofa_prices", joinColumns = @JoinColumn(name = "item_id"))
     @Column(name = "item_price")
-    Set<Integer> prices = new HashSet<>();
+    List<Integer> prices = new ArrayList<>();
 
     @Singular
     @ElementCollection
     @CollectionTable(name = "sofa_prices", joinColumns = @JoinColumn(name = "item_id"))
     @Column(name = "fabric_category")
-    Set<Integer> fabric_categories = new HashSet<>();
+    List<Integer> fabric_categories = new ArrayList<>();
 
     @Singular
     @ManyToMany
@@ -58,7 +56,7 @@ public class Item {
     joinColumns = @JoinColumn(name = "sofa_id"),
     inverseJoinColumns = @JoinColumn(name = "color_id"))
     @Column(name = "color_name")
-    Set<Color> item_colors = new HashSet<>();
+    List<Color> item_colors = new ArrayList<>();
 
     @Singular
     @ManyToMany
@@ -67,7 +65,7 @@ public class Item {
             joinColumns = @JoinColumn(name = "sofa_id"),
             inverseJoinColumns = @JoinColumn(name = "style_id"))
     @Column(name = "style_name")
-    Set<Style> item_styles = new HashSet<>();
+    List<Style> item_styles = new ArrayList<>();
 
     @OneToMany(mappedBy = "item", orphanRemoval = true)
     List<OrderContent> orderContentList = new ArrayList<>();

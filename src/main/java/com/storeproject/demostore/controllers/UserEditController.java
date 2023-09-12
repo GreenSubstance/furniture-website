@@ -3,6 +3,9 @@ package com.storeproject.demostore.controllers;
 import com.storeproject.demostore.models.Role;
 import com.storeproject.demostore.models.User;
 import com.storeproject.demostore.services.UserService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -12,10 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/user")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class UserEditController {
 
-    @Autowired
-    private UserService userService;
+    final UserService userService;
 
     @GetMapping
     public String userList(Model model) {

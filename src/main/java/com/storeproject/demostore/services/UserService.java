@@ -1,15 +1,13 @@
 package com.storeproject.demostore.services;
 
+import com.storeproject.demostore.dto.request.UserDto;
 import com.storeproject.demostore.models.Order;
 import com.storeproject.demostore.models.Role;
 import com.storeproject.demostore.models.User;
-import com.storeproject.demostore.repos.UserRepos;
+import com.storeproject.demostore.repos.UserRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,71 +16,60 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+@Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Service
 public class UserService implements UserDetailsService {
-    final UserRepos userRepos;
+    final UserRepo userRepo;
     final PasswordEncoder passwordEncoder;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepos
+        return userRepo
                 .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username)); // repos throws exception
+                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     public List<User> getAllUsers() {
-        return userRepos.findAll();
+        return userRepo.findAll();
     }
 
     @Transactional
-    public void registerUser(User user) {
-        User registeredUser = new User();
-        registeredUser.setUsername(user.getUsername());
-        registeredUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        registeredUser.setActive(true);
-        registeredUser.setRoles(Collections.singleton(Role.USER));
-        userRepos.save(registeredUser);
-    }
-
-    public User getCurrentlyLoggedInUser(Authentication authentication) {
-        //if (authentication == null) return null;
-
-        User user = null;
-        Object principal = authentication.getPrincipal();
-
-        user = (User) loadUserByUsername(((UserDetails) principal).getUsername());
-        return user;
+    public void registerUser(UserDto user) {
+        userRepo.save(User.builder()
+                .username(user.getUsername())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .active(true)
+                .roles(Collections.singleton(Role.USER))
+                .build());
     }
 
     @Transactional
-    public String updateProfile(User user, String username, String password, String email) {
-        String oldPassword = user.getPassword();
-        String oldEmail = user.getUser_email();
+    public String updateProfile(User user, UserDto userInfo) {
 
-        if (password != null && !password.isEmpty()) {
-            if (oldPassword == passwordEncoder.encode(password)) return "New password cannot be the same as current password";
+        if (userInfo.getPassword() != null && !userInfo.getPassword().isEmpty()) {
+            if (Objects.equals(user.getPassword(), passwordEncoder.encode(userInfo.getPassword()))) return "New password cannot be the same as current password";
             else {
-                user.setPassword(passwordEncoder.encode(password));
-                userRepos.save(user);
+                user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
+                userRepo.save(user);
             }
         }
 
-        if (email != null && !email.isEmpty()) {
-            if (oldEmail == email) return "New email cannot be the same as current email";
+        if (userInfo.getEmail() != null && !userInfo.getEmail().isEmpty()) {
+            if (Objects.equals(userInfo.getEmail(), user.getUserEmail())) return "New email cannot be the same as current email";
             else {
-                user.setUser_email(email);
-                userRepos.save(user);
+                user.setUserEmail(userInfo.getEmail());
+                userRepo.save(user);
             }
         }
 
-        if (username != null && !username.isEmpty()) {
-            if (oldEmail == email) return "New username cannot be the same as current username";
+        if (userInfo.getUsername() != null && !userInfo.getUsername().isEmpty()) {
+            if (Objects.equals(user.getUsername(), userInfo.getUsername())) return "New username cannot be the same as current username";
             else {
-                user.setUsername(username);
-                userRepos.save(user);
+                user.setUsername(userInfo.getUsername());
+                userRepo.save(user);
             }
         }
 
@@ -91,12 +78,12 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void saveUser(User user) {
-        userRepos.save(user);
+        userRepo.save(user);
     }
 
     @Transactional
     public List<Order> getOrders(User user) {
-        return userRepos
+        return userRepo
                 .findByUsername(user.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(user.getUsername()))
                 .getOrders();

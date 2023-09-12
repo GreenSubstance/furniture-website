@@ -1,36 +1,36 @@
 package com.storeproject.demostore.controllers;
 
+import com.storeproject.demostore.dto.request.UserDto;
 import com.storeproject.demostore.models.User;
 import com.storeproject.demostore.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    final UserService userService;
 
     @GetMapping("/profile")
     public String getProfile(@AuthenticationPrincipal User user, Model model) {
-        //model.addAttribute("orders", user.getOrders());
         model.addAttribute("orders", userService.getOrders(user));
+        model.addAttribute(new UserDto());
         return "profile";
     }
 
     @PostMapping("/profile")
-    public String updateProfile(@AuthenticationPrincipal User user, Model model,
-                                @RequestParam(required = false) String newUsername,
-                                @RequestParam(required = false) String newPassword,
-                                @RequestParam(required = false) String newEmail) {
+    public String updateProfile(@AuthenticationPrincipal User user,
+                                @ModelAttribute("userInfo") UserDto userInfo) {
 
-        userService.updateProfile(user, newUsername, newPassword, newEmail);
+        userService.updateProfile(user, userInfo);
         return "redirect:/user/profile";
     }
 }

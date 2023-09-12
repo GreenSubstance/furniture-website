@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class CatalogController {
 
     final ItemService itemService;
-    //final UserCartService userCartService;
     final CartService cartService;
 
     @GetMapping(path = {"/catalog","/search"})
@@ -52,20 +51,5 @@ public class CatalogController {
         }
         cartService.addItem(cartItemDto);
     }
-
-    /*
-    @PostMapping("/product/{id}")
-    public String addItemToCart(@PathVariable(name = "id") Long productId, Model model,
-                                @AuthenticationPrincipal User user,
-                                @RequestParam(name = "qnt") Integer qnt, @RequestParam(name = "fabric_cat") Integer fabric_cat,
-                                @RequestParam(name = "price") Integer price, @RequestParam(name = "color_name", required = false) String color_name) {
-        if (user == null) {
-            return "redirect:/login";
-        }
-        Integer addedQnt = userCartService.addItemToCart(user, productId, qnt, fabric_cat, price, color_name);
-        model.addAttribute("item", itemService.getById(productId));
-        return "product";
-    }
-    */
 
 }

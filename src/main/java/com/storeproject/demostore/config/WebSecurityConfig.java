@@ -21,8 +21,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .antMatchers("/resources/**").permitAll()
                         .antMatchers("/", "/registration", "/home", "/catalog", "/product").permitAll()
-                        .antMatchers("/cart").authenticated()
-                        //.anyRequest().authenticated()
+                        .antMatchers("/cart", "/user/**").authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")

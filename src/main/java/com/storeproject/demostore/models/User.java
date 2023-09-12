@@ -17,40 +17,31 @@ import java.util.*;
 @Entity
 @Table(name = "usr")
 public class User implements UserDetails {
-    private static final long serialVersionUID = 6599654999439938509L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
 
+    @Column(name = "username")
     String username;
+
+    @Column(name = "password")
     String password;
+
+    @Column(name = "active")
     boolean active;
-    String user_email;
+
+    @Column(name = "user_email")
+    String userEmail;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    Set<Role> role = new HashSet<>();
+    Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true) //eager
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     List<Order> orders = new ArrayList<>();
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<Role> getRoles() {
-        return role;
-    }
-
-    public void setRoles(Set<Role> role) {
-        this.role = role;
-    }
-
 
     @Override
     public boolean isAccountNonExpired() {

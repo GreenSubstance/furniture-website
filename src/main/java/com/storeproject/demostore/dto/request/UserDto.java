@@ -9,10 +9,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderDto {
+public class UserDto {
 
-    String address;
-    Integer deliveryFee;
-    Integer upfrontFee;
-    Integer total;
+    String username;
+    String password;
+    String email;
 }

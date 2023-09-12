@@ -1,5 +1,6 @@
 package com.storeproject.demostore.controllers;
 
+import com.storeproject.demostore.dto.request.UserDto;
 import com.storeproject.demostore.models.User;
 import com.storeproject.demostore.services.UserService;
 import lombok.AccessLevel;
@@ -11,9 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Controller
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-@Controller
 public class RegistrationController {
 
     final UserService userService;
@@ -24,7 +25,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(Model model, User user) {
+    public String addUser(Model model, UserDto user) {
 
         try {
             User userFromDb = userService.loadUserByUsername(user.getUsername());

@@ -16,45 +16,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/cart")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class CartController {
 
     final CartService cartService;
 
-    @GetMapping("/cart")
-    public String userCart(Model model, @AuthenticationPrincipal User user) {
-
-        if (user == null) {
-            throw new BadRequestException("user not logged in");
-        }
-
+    @GetMapping()
+    public String userCart(Model model) {
         Map<Integer, CartItemDto> cart = cartService.getCart();
         model.addAttribute("listUserCart", cart);
         System.out.println(cart);
-
         return "cart";
     }
 
-    @GetMapping("/cart/{item_id}")
-    public String removeItemFromCart(@AuthenticationPrincipal User user,
-                                     @PathVariable(name = "item_id") Integer itemId) {
-        if (user == null) {
-            return "Log in";
-        }
+    @GetMapping("/{item_id}")
+    public String removeItemFromCart(@PathVariable(name = "item_id") Integer itemId) {
         cartService.removeItem(itemId);
         return "redirect:/cart";
     }
 
-    @GetMapping("/cart/checkout")
-    public String checkout(Model model, @AuthenticationPrincipal User user) {
+    @GetMapping("/checkout")
+    public String checkout(Model model) {
         Map<Integer, CartItemDto> cart = cartService.getCart();
         model.addAttribute("listUserCart", cart);
         model.addAttribute("orderInfo", new OrderDto());
         return "/checkout";
     }
 
-    @PostMapping("/cart/checkout")
+    @PostMapping("/checkout")
     public String checkoutFormOrder(@AuthenticationPrincipal User user,
                                     @ModelAttribute("orderInfo") OrderDto orderDto) {
 

@@ -30,7 +30,7 @@ public class ItemService {
         itemRepo.save(item);
     }
 
-    public void deleteItem(Long item_id) {
-        itemRepo.deleteById(item_id);
+    public void deleteItem(Long itemId) {
+        itemRepo.deleteById(itemId);
     }
 }
