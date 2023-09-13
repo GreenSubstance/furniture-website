@@ -11,20 +11,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/registration")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class RegistrationController {
 
     final UserService userService;
 
-    @GetMapping("/registration")
+    @GetMapping()
     public String registration(Model model) {
         return "registration";
     }
 
-    @PostMapping("/registration")
+    @PostMapping()
     public String addUser(Model model, UserDto user) {
 
         try {

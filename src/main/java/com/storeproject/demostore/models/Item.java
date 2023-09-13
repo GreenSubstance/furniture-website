@@ -41,6 +41,7 @@ public class Item {
     @ElementCollection
     @CollectionTable(name = "sofa_prices", joinColumns = @JoinColumn(name = "item_id"))
     @Column(name = "item_price")
+    @OrderBy("item_price asc")
     List<Integer> prices = new ArrayList<>();
 
     @Singular

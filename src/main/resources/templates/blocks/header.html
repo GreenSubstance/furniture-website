@@ -2,35 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="header">
-  <div class="container">
-    <div class="header_inner">
-      <div class="header_logo">
-        <img th:src="@{/img/logo.png}" alt="Лого">
-      </div>
-      <ul class="header_items">
-        <li>
-          <div class="header_title">
-            Оранжерея мебели
-          </div>
-        </li>
-        <li>
-          <nav class="nav">
-            <a class="nav_link" href="/">Главная</a>
-            <a class="nav_link" href="/catalog">Каталог</a>
-            <a class="nav_link" sec:authorize="hasAuthority('ADMIN')" href="/admin">Редактор</a>
-            <a class="nav_link" th:unless="${#httpServletRequest.remoteUser == null}" href="/user/profile">Профиль</a>
-            <div th:unless="${#httpServletRequest.remoteUser == null}" class="nav_signedin">
-              <a class="nav_link"  th:inline="text">Signed in as: [[${#httpServletRequest.remoteUser}]]!</a>
-              <form class="nav_link" th:action="@{/logout}" method="post">
-                <input th:style="'color: black'" type="submit" value="Sign Out"/>
-              </form>
+<header class="p-3 mb-3 border-bottom" th:fragemnt="header">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
+                <li><a href="/catalog" class="nav-link px-2 link-body-emphasis">Catalog</a></li>
+                <li><a href="/admin" sec:authorize="hasAuthority('ADMIN')" class="nav-link px-2 link-body-emphasis">Edit tools</a></li>
+                <li><a href="#" class="nav-link px-2 link-body-emphasis">About Us</a></li>
+            </ul>
+
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul th:unless="${#httpServletRequest.remoteUser == null}" class="dropdown-menu text-small">
+                    <li><a class="dropdown-item" href="/cart">Cart</a></li>
+                    <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <form id="logout" th:action="@{/logout}" method="post">
+                        <li>
+                            <a class="dropdown-item" href=# onclick="document.getElementById('logout').submit()">
+                                <input type="hidden"/>
+                                Sign out
+                            </a>
+                        </li>
+                    </form>
+                </ul>
+                <ul th:if="${#httpServletRequest.remoteUser == null}" class="dropdown-menu text-small">
+                    <li><a class="dropdown-item" href="/login">Log in</a></li>
+                </ul>
             </div>
-            <a class="nav_link" th:unless="${#httpServletRequest.remoteUser == null}" href="/cart"><img th:src="@{/img/cart.png}" alt="Корзина"></a>
-            <a class="nav_link" th:if="${#httpServletRequest.remoteUser == null}" href="/login">Log in</a>
-          </nav>
-        </li>
-      </ul>
+        </div>
     </div>
-  </div>
-</div>
+</header>

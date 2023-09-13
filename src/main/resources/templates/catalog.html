@@ -4,56 +4,51 @@
 <head>
   <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
-  <link rel="stylesheet" th:href="@{/style-catalog.css}">
-  <title th:text="${title} + ' | Furniture Orangery'"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+  <title th:text="${title} + ' | Furniture Orangery'"></title>
 </head>
 
 <body>
 
 <!--Header-->
+
 <header th:insert="blocks/header :: header" class="header"></header>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
 
 <!-- Catalog -->
 
-<div class="catalog">
-  <div class="container">
+<main>
 
-    <div class="catalog_search">
-      <h1 class="catalog_title">Каталог</h1>
-      <form th:action="@{/search}" method="get">
-        <input type="text" class="input-search" name="keyword" th:value="${keyword}"  placeholder="Search...">
-        <button type="submit" class="btn btn--search">Search</button>
+  <div class="album py-2 bg-body-tertiary">
+    <div class="container">
+
+      <form th:action="@{/search}" method="get" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 p-3" role="search">
+        <input type="search" class="form-control" name="keyword" th:value="${keyword}"  placeholder="Search..." aria-label="Search">
+        <!--<button type="submit" class="btn btn--search">Search</button>-->
       </form>
-    </div>
 
-    <div class="filter_content">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col" th:each="el : ${items}">
+          <div class="card shadow-sm">
+            <a th:href="@{/product/{id}(id=${el.item_id})}"><img class ="bd-placeholder-img card-img-top img-responsive" style="height: 300px" th:src="@{${el.img_path}}"></a>
+            <div class="card-body">
+              <a class="link-body-emphasis text-decoration-none" th:href="@{/product/{id}(id=${el.item_id})}"><strong><p class="card-text h2" th:text="${el.item_name}"></p></strong></a>
+              <div class="d-flex flex-column align-items-left">
+                <p class="item_dims" th:text="'Dims: ' + ${el.diml} + ' x ' + ${el.dimw} + ' x ' + ${el.dimh}"></p>
+                <p class="item_price mb-0 h3" th:text="${el.prices[0]} + '₽ - ' + ${el.prices[#lists.size(el.prices) - 1]} + '₽'"></p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    </div>
-
-    <div class="catalog_container" >
-      <div class="catalog_content" th:each="el : ${items}">
-        <a th:href="@{/product/{id}(id=${el.item_id})}"><img class ="item_img" th:src="@{${el.img_path}}"></a>
-        <p class="item_name" th:text="${el.item_name}"/>
-        <p class="item_price" th:text="${el.prices[0]}"/>
-        <p class="item_dims" th:text="'Габариты: ' + ${el.diml} + ' x ' + ${el.dimw} + ' x ' + ${el.dimh}"/>
       </div>
-    </div>
 
+    </div>
   </div>
-</div>
+
+</main>
 
 </body>
 </html>
-
-<!--
-<div th:each="el : ${items}">
-      <h3 th:text="${el.item_name}"/>
-      <h3 th:text="${el.item_desc}"/>
-      <tr th:each="p : ${el.prices}">
-        <h3 th:text="${p}"/>
-      </tr>
-      <tr th:each="cat : ${el.fabric_categories}">
-        <h3 th:text="${cat}"/>
-      </tr>
-    </div>
--->

@@ -44,9 +44,9 @@ public class UserEditController {
             user.setUsername(username);
         }
 
-        user.getRoles().clear();
+        user.getRole().clear();
         for(String role : roles) {
-            user.getRoles().add(Role.valueOf(role));
+            user.getRole().add(Role.valueOf(role));
         }
 
         userService.saveUser(user);

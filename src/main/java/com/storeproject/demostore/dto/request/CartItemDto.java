@@ -3,6 +3,8 @@ package com.storeproject.demostore.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.beans.Transient;
 import java.util.Objects;
 
@@ -14,13 +16,28 @@ import java.util.Objects;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartItemDto {
 
+    @NotNull
     Long id;
+
+    @NotBlank
     String itemName;
+
+    @NotBlank
     String imgPath;
+
+    @NotNull
     Integer fabricCategory;
+
+    @NotNull
     Integer price;
+
+    @NotNull
     Long colorId;
+
+    @NotBlank
     String colorName;
+
+    @NotNull
     Integer qnt;
 
     @Transient

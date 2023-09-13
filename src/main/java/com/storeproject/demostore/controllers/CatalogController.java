@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 @Controller
@@ -25,12 +28,7 @@ public class CatalogController {
     @GetMapping(path = {"/catalog","/search"})
     public String catalog(@RequestParam(name = "keyword", required = false) String keyword, Model model) {
         model.addAttribute("title", "Catalog");
-        Iterable<Item> items;
-        if (keyword != null && !keyword.isEmpty()) {
-            items = itemService.getByKeyword(keyword);
-        } else {
-            items = itemService.getAllItems();
-        }
+        List<Item> items = itemService.getByKeyword(keyword);
         model.addAttribute("items", items);
         return "catalog";
     }
@@ -45,7 +43,7 @@ public class CatalogController {
 
     @PostMapping("/product")
     public void addItemToCart(@AuthenticationPrincipal User user,
-                              @ModelAttribute("cartItem") CartItemDto cartItemDto) {
+                              @Valid @ModelAttribute("cartItem") CartItemDto cartItemDto) {
         if (user == null) {
             throw new BadRequestException("user not logged in");
         }

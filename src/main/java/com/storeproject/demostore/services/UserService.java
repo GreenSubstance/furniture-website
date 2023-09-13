@@ -37,12 +37,17 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public void saveUser(User user) {
+        userRepo.save(user);
+    }
+
+    @Transactional
     public void registerUser(UserDto user) {
         userRepo.save(User.builder()
                 .username(user.getUsername())
                 .password(passwordEncoder.encode(user.getPassword()))
                 .active(true)
-                .roles(Collections.singleton(Role.USER))
+                .role(Collections.singleton(Role.USER))
                 .build());
     }
 
@@ -74,18 +79,5 @@ public class UserService implements UserDetailsService {
         }
 
         return "Successfully changed";
-    }
-
-    @Transactional
-    public void saveUser(User user) {
-        userRepo.save(user);
-    }
-
-    @Transactional
-    public List<Order> getOrders(User user) {
-        return userRepo
-                .findByUsername(user.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException(user.getUsername()))
-                .getOrders();
     }
 }

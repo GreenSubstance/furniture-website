@@ -7,19 +7,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Service
 public class ItemService {
 
     final ItemRepo itemRepo;
 
-    public Iterable<Item> getAllItems() {
+    public List<Item> getAllItems() {
         return itemRepo.findAll();
     }
-    public Iterable<Item> getByKeyword(String keyword) {
-        return itemRepo.findByKeyword(keyword);
+
+    public List<Item> getByKeyword(String keyword) {
+        return (keyword != null && !keyword.isBlank())
+                ? itemRepo.findByKeyword(keyword)
+                : itemRepo.findAll();
     }
+
     public Item getById(Long id) {
         return itemRepo
                 .findById(id)

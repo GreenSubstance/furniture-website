@@ -1,25 +1,19 @@
 package com.storeproject.demostore.services;
 
-import com.storeproject.demostore.dto.mappers.OrderContentMapper;
-import com.storeproject.demostore.dto.mappers.OrderMapper;
 import com.storeproject.demostore.dto.request.CartItemDto;
 import com.storeproject.demostore.dto.request.OrderDto;
-import com.storeproject.demostore.models.Order;
 import com.storeproject.demostore.models.User;
-import com.storeproject.demostore.repos.OrderContentRepo;
-import com.storeproject.demostore.repos.OrderRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RequiredArgsConstructor
@@ -28,10 +22,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CartService {
 
-    final OrderRepo orderRepo;
-    final OrderContentRepo orderContentRepo;
+    final OrderService orderService;
 
-    final Map<Integer, CartItemDto> cart = new HashMap<>(); //id, item
+    final Map<Integer, CartItemDto> cart = new ConcurrentHashMap<>(); //id, item
     final AtomicInteger idGen = new AtomicInteger(0);
 
 
@@ -59,15 +52,9 @@ public class CartService {
         cart.remove(itemId);
     }
 
-    @Transactional
     public void checkout(User user, OrderDto orderInfo) {
 
-        Order order = OrderMapper.toEntity(orderInfo, user);
-        orderRepo.save(order);
-        cart
-                .values()
-                .forEach(v ->
-                        orderContentRepo.save(OrderContentMapper.toEntity(v, order)));
+        orderService.formOrder(user, orderInfo, cart);
         cart.clear();
         idGen.set(0);
     }

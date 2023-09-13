@@ -4,78 +4,71 @@
 <head>
   <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
-  <link rel="stylesheet" th:href="@{/style-product-page.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
   <title th:text="${title} + ' | Furniture Orangery'"/>
 </head>
 
 <body>
 
 <!--Header-->
+
 <header th:insert="blocks/header :: header" class="header"></header>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
 
 <!-- Product -->
 <div class="main_container">
   <div class="container">
-
-    <div class="item_info">
-      <img class ="item_img" th:src="@{'/' + ${item.img_path}}">
-      <div class="desc_container">
-        <p class="item_name" th:text="${item.item_name}"/>
-        <p class="item_desc" th:text="${item.item_desc}"/>
-        <tr class="available_styles" th:each="st : ${item.item_styles}">
-          <p class="item_style" th:text="${st.style_name}"/>
-        </tr>
-      </div>
-
-      <div class="features_container">
-        <div class="dims_container">
-          <p class="item_dims">Габариты:</p>
-          <p class="item_dims" th:text="${item.diml} + ' x ' + ${item.dimw} + ' x ' + ${item.dimh}"/>
-          <p class="item_dims">Спальное место:</p>
-          <p class="item_dims" th:text="${item.diml_sleep} + ' x ' + ${item.dimw_sleep} + ' x ' + ${item.dimh_sleep}"/>
-          <p class="item_dims">Посадачное место:</p>
-          <p class="item_dims" th:text="${item.dimd_seat} + ' x ' + ${item.dimh_seat}"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="item_info_moving">
-      <form id="addToCartForm" onsubmit="addToCart(event)" class="item_info_moving" method="post" th:action="@{'/product/'}" th:object="${cartItem}">
-        <p class="item_name_m" th:text="${item.item_name}"/>
-        <p class="item_price_m" id="price_field" th:value="${item.prices[0]}" th:text="${#numbers.formatInteger(item.prices[0],3,'DEFAULT')} + ' ₽'"/>
-        <div class="select">
-          <select id="fabric_category" name="fabric_category" th:field="*{fabricCategory}" onchange="changePrice(this)">
-            <option class="cat_option" th:each="cat : ${item.fabric_categories}" th:value="${cat}" th:text="'Категория ' + ${cat}"/>
-          </select>
-        </div>
-        <div class="color_select">
-          <ul>
-            <li th:each="color : ${item.item_colors}">
-              <input type="radio" name="color_name" class="color_radio" th:value="${color.color_name}" th:field="*{colorName}">
-              <input type="hidden" name="colorId" th:value="${color.color_id}" th:with="colorId=*{colorId}">
-              <label th:text="${color.color_name}"/>
-            </li>
-          </ul>
-
-          <!--
-          <tr th:each="color : ${item.item_colors}">
-
-            <p class="item_color_name" th:text="${color.color_name}"/>
-            <p class="item_color_hex" th:text="${color.color_hex}"/>
-
-            <button class="btn-color" type="button" th:value="${color.color_hex}" th:style="'display: block; vertical-align: top; height : 50px; width : 50px ; border: 0; border-radius: 50%; margin: 10px; cursor: pointer; text-decoration: none; transition: background .1s linear; background-color: #' + ${color.color_hex}"></button>
+    <div class="row g-5">
+      <div class="item_info col-md-7 col-lg-8">
+        <img class ="item_img card-img-top img-responsive" th:src="@{'/' + ${item.img_path}}">
+        <div class="desc_container">
+          <p class="item_desc" th:text="${item.item_desc}"/>
+          <tr class="available_styles" th:each="st : ${item.item_styles}">
+            <p class="item_style" th:text="${st.style_name}"/>
           </tr>
-          -->
         </div>
-        <input type="number" name="quantity" id="quantity" value="1" min="1" max="100" th:field="*{qnt}">
-        <input type="hidden" name="price" id="price_input" th:value="${item.prices[0]}" th:with="price=*{price}">
-        <input type="hidden" name="id" id="item_id" th:value="${item.item_id}" th:with="id=*{id}">
-        <input type="hidden" name="itemName" th:value="${item.item_name}" th:with="itemName=*{itemName}">
-        <input type="hidden" name="imgPath" th:value="${item.img_path}" th:with="imgPath=*{imgPath}">
-        <button class="btn-cart" type="submit">Add to cart</button>
-      </form>
-    </div>
 
+        <div class="features_container">
+          <div class="dims_container">
+            <p class="item_dims">Dims:</p>
+            <p class="item_dims" th:text="${item.diml} + ' x ' + ${item.dimw} + ' x ' + ${item.dimh}"/>
+            <p class="item_dims">Sleeping accommodation:</p>
+            <p class="item_dims" th:text="${item.diml_sleep} + ' x ' + ${item.dimw_sleep} + ' x ' + ${item.dimh_sleep}"/>
+            <p class="item_dims">Seating accommodation:</p>
+            <p class="item_dims" th:text="${item.dimd_seat} + ' x ' + ${item.dimh_seat}"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="item_info_moving col-md-5 col-lg-4">
+        <form id="addToCartForm" onsubmit="addToCart(event)" class="item_info_moving" method="post" th:action="@{'/product/'}" th:object="${cartItem}">
+          <p class="item_name_m " th:text="${item.item_name}"/>
+          <p class="item_price_m " id="price_field" th:value="${item.prices[0]}" th:text="${#numbers.formatInteger(item.prices[0],3,'DEFAULT')} + ' ₽'"/>
+          <div class="select mb-2">
+            <select class="form-select" id="fabric_category" name="fabric_category" th:field="*{fabricCategory}" onchange="changePrice(this)">
+              <option class="cat_option" th:each="cat : ${item.fabric_categories}" th:value="${cat}" th:text="'Category ' + ${cat}"/>
+            </select>
+          </div>
+          <div class="color_select list-group list-group-radio d-grid gap-2 border-0 mb-2">
+            <div class="position-relative" th:each="color : ${item.item_colors}">
+              <input th:id="colorSelectRadio + ${color.color_id}" type="radio" name="color_name" class="form-check-input position-absolute mt-3 end-0 me-3 fs-5" style="z-index:99" th:value="${color.color_name}" th:field="*{colorName}">
+              <input type="hidden" name="colorId" th:value="${color.color_id}" th:with="colorId=*{colorId}">
+              <label class="list-group-item py-3 pe-5" th:for="colorSelectRadio + ${color.color_id}" th:text="${color.color_name}"/>
+            </div>
+          </div>
+          <input class="form-control mb-2" type="number" name="quantity" id="quantity" value="1" min="1" max="100" th:field="*{qnt}">
+
+          <input type="hidden" name="price" id="price_input" th:value="${item.prices[0]}" th:with="price=*{price}">
+          <input type="hidden" name="id" id="item_id" th:value="${item.item_id}" th:with="id=*{id}">
+          <input type="hidden" name="itemName" th:value="${item.item_name}" th:with="itemName=*{itemName}">
+          <input type="hidden" name="imgPath" th:value="${item.img_path}" th:with="imgPath=*{imgPath}">
+
+          <button class="btn-cart btn btn-primary d-inline-flex align-items-center" type="submit">Add to cart</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -90,8 +83,6 @@
     document.getElementById("price_field").innerHTML = listPrices[num] + ' ₽';
   }
 </script>
-<script th:src="@{/static/quantity_control.js}"></script>
-
 <script th:inline="javascript">
   function addToCart(e) {
     var url = "/product";
@@ -104,13 +95,3 @@
 </script>
 
 </html>
-
-
-
-
-<!--
-<tr th:each="cat : ${item.fabric_categories}">
-  <p th:text="${item.prices[__${cat}__]}">
-  <p th:text="${cat}"/>
-</tr>
--->

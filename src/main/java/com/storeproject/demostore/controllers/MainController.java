@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class MainController {
 
-    final UserService userService;
-
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("title", "Home page");

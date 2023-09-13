@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    Set<Role> roles = new HashSet<>();
+    Set<Role> role = new HashSet<>();
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     List<Order> orders = new ArrayList<>();
@@ -65,7 +65,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return getRole();
     }
 
 }
