@@ -6,7 +6,6 @@ import com.storeproject.demostore.services.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,18 +38,7 @@ public class UserEditController {
                            @RequestParam("userId") User user,
                            @RequestParam("username") String username,
                            @RequestParam("roles") String[] roles) {
-
-        if (username != null && !username.isEmpty()) {
-            user.setUsername(username);
-        }
-
-        user.getRole().clear();
-        for(String role : roles) {
-            user.getRole().add(Role.valueOf(role));
-        }
-
-        userService.saveUser(user);
-
+        userService.saveUser(user, username, roles);
         return "redirect:/user";
     }
 }

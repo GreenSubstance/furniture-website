@@ -12,14 +12,15 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@Controller
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-@Controller
 public class CatalogController {
 
     final ItemService itemService;
@@ -43,11 +44,19 @@ public class CatalogController {
 
     @PostMapping("/product")
     public void addItemToCart(@AuthenticationPrincipal User user,
-                              @Valid @ModelAttribute("cartItem") CartItemDto cartItemDto) {
+                              Model model,
+                              @Valid @ModelAttribute("cartItem") CartItemDto cartItemDto,
+                              BindingResult bindingResult) {
         if (user == null) {
             throw new BadRequestException("user not logged in");
         }
-        cartService.addItem(cartItemDto);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("message", "Could not add item to cart");
+        }
+        else {
+            cartService.addItem(cartItemDto);
+            model.addAttribute("message", "Added item to cart!");
+        }
     }
 
 }

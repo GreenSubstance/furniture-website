@@ -9,7 +9,7 @@
 <body>
 <form th:action="@{'/user/' + ${user.id}}" method="post">
   <input type="text" th:value="${user.username}" name="username">
-  <div th:each="role : ${role}">
+  <div th:each="role : ${roles}">
     <label><input type="checkbox" th:text="${role}" th:checked="${#sets.contains(user.role, role)}" th:value="${role}" name="roles"></label>
   </div>
   <input type="hidden" th:value="${user.id}" name="userId">

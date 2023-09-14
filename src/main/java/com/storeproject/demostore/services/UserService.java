@@ -37,7 +37,17 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void saveUser(User user) {
+    public void saveUser(User user, String username, String[] roles) {
+
+        if (username != null && !username.isEmpty()) {
+            user.setUsername(username);
+        }
+
+        user.getRole().clear();
+        for(String role : roles) {
+            user.getRole().add(Role.valueOf(role));
+        }
+
         userRepo.save(user);
     }
 
@@ -52,10 +62,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public String updateProfile(User user, UserDto userInfo) {
+    public String updateProfile(User userPrincipal, UserDto userInfo) {
+
+        User user = loadUserByUsername(userPrincipal.getUsername());
 
         if (userInfo.getPassword() != null && !userInfo.getPassword().isEmpty()) {
-            if (Objects.equals(user.getPassword(), passwordEncoder.encode(userInfo.getPassword()))) return "New password cannot be the same as current password";
+            if (user.getPassword().equals(passwordEncoder.encode(userInfo.getPassword()))) return "New password cannot be the same as current password";
             else {
                 user.setPassword(passwordEncoder.encode(userInfo.getPassword()));
                 userRepo.save(user);
@@ -63,7 +75,7 @@ public class UserService implements UserDetailsService {
         }
 
         if (userInfo.getEmail() != null && !userInfo.getEmail().isEmpty()) {
-            if (Objects.equals(userInfo.getEmail(), user.getUserEmail())) return "New email cannot be the same as current email";
+            if (userInfo.getEmail().equals(user.getUserEmail())) return "New email cannot be the same as current email";
             else {
                 user.setUserEmail(userInfo.getEmail());
                 userRepo.save(user);
@@ -71,7 +83,7 @@ public class UserService implements UserDetailsService {
         }
 
         if (userInfo.getUsername() != null && !userInfo.getUsername().isEmpty()) {
-            if (Objects.equals(user.getUsername(), userInfo.getUsername())) return "New username cannot be the same as current username";
+            if (user.getUsername().equals(userInfo.getUsername())) return "New username cannot be the same as current username";
             else {
                 user.setUsername(userInfo.getUsername());
                 userRepo.save(user);

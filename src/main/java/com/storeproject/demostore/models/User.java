@@ -68,4 +68,16 @@ public class User implements UserDetails {
         return getRole();
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", userEmail='" + userEmail + '\'' +
+                ", role=" + role +
+                ", orders=" + orders +
+                '}';
+    }
 }

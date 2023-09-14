@@ -13,21 +13,90 @@
 <!--Header-->
 
 <header th:insert="blocks/header :: header" class="header"></header>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
 
 <!--Profile-->
 
 <div class="profile">
-    <form th:action="@{/user/profile}" method="post">
-        <div><label> User Name : <input type="text" name="newUsername"/> </label></div>
-        <div><label> Password: <input type="password" name="newPassword"/> </label></div>
-        <div><label> Email: <input type="email" name="newEmail"/> </label></div>
-        <div><input type="submit" class="btn--search" value="Edit"/></div>
-    </form>
+    <div class="container">
+        <form th:action="@{/user/profile}" method="post">
+            <div><label> User Name : <input type="text" name="newUsername"/> </label></div>
+            <div><label> Password: <input type="password" name="newPassword"/> </label></div>
+            <div><label> Email: <input type="email" name="newEmail"/> </label></div>
+            <div><input type="submit" class="btn" value="Edit"/></div>
+        </form>
 
-    <table>
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th>Order number</th>
+                <th>Placement date</th>
+                <th>Delivery date</th>
+                <th>Total</th>
+                <th>State</th>
+                <th>Details</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <th:block th:each="order : ${orders}">
+                <tr class="accordion-toggle">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${#dates.format(order.placementDate, 'dd-MMM-yyyy')}"></td>
+                    <td th:text="${#dates.format(order.deliveryDate, 'dd-MMM-yyyy')}"></td>
+                    <td th:text="${order.total}"></td>
+                    <td th:text="${order.orderState}"></td>
+                    <td><button class="btn btn-default btn-xs" data-bs-toggle="collapse" th:attr="data-bs-target='#details'+${order.id}">Details</button></td>
+                </tr>
+
+                <tr>
+                    <td colspan="12" class="hiddenRow">
+                        <div class="accordian-body collapse" th:id="details+${order.id}">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr class="info">
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Fabric category</th>
+                                    <th>Sum</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="item : ${order.contents}">
+                                    <td th:text="${item.item.item_name}"></td>
+                                    <td th:text="${item.quantity}"></td>
+                                    <td th:text="${item.fabricCategory}"></td>
+                                    <td th:text="${item.sumPrice}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
+
+<!--
+<table>
         <thead>
         <tr>
             <th>Order number</th>
@@ -40,12 +109,39 @@
         </thead>
         <tbody>
         <tr th:each="order : ${orders}">
-            <td th:text="${order.id}"/>
-            <td th:text="${#dates.format(order.placementDate, 'dd-MMM-yyyy')}"/>
-            <td th:text="${#dates.format(order.deliveryDate, 'dd-MMM-yyyy')}"/>
-            <td th:text="${order.total}"/>
-            <td th:text="${order.orderState}"/>
+            <td th:text="${order.id}"></td>
+            <td th:text="${#dates.format(order.placementDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${#dates.format(order.deliveryDate, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${order.total}"></td>
+            <td th:text="${order.orderState}"></td>
             <td>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" th:attr="data-bs-target='#details'+${order.id}" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+                    Details
+                </button>
+
+            <td class="collapse navbar-collapse" th:id="details + ${order.id}">
+                <ul class="navbar-nav me-auto mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </td>
+
+
                 <a href="#">Details
                     <span class="tooltip">
                     <table>
@@ -59,20 +155,19 @@
                         </thread>
                         <tbody>
                         <tr th:each="item : ${order.contents}">
-                            <td th:text="${item.item.item_id}"/>
-                            <td th:text="${item.quantity}"/>
-                            <td th:text="${item.fabricCategory}"/>
-                            <td th:text="${item.sumPrice}"/>
+                            <td th:text="${item.item.item_id}"></td>
+                            <td th:text="${item.quantity}"></td>
+                            <td th:text="${item.fabricCategory}"></td>
+                            <td th:text="${item.sumPrice}"></td>
                         </tr>
                         </tbody>
                     </table>
                 </span>
                 </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 
-</body>
-</html>
+</td>
+
+</tr>
+</tbody>
+</table>
+-->

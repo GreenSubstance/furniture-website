@@ -33,7 +33,11 @@ public class UserController {
                                 Model model,
                                 @ModelAttribute("userInfo") UserDto userInfo) {
 
-        model.addAttribute("message", userService.updateProfile(user, userInfo));
+        String result = userService.updateProfile(user, userInfo);
+        model.addAttribute("message", "t");
+        System.out.println(userInfo);
+        System.out.println(user);
+        System.out.println(result);
         return "redirect:/user/profile";
     }
 }

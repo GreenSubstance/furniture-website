@@ -43,8 +43,8 @@ public class AdminController {
         return "redirect:/admin/catalog";
     }
 
-    @GetMapping("/catalog/delete/{item_id}")
-    public String deleteItem(@PathVariable(name = "item_id") Long itemId) {
+    @GetMapping("/catalog/delete/{itemId}")
+    public String deleteItem(@PathVariable(name = "itemId") Long itemId) {
         itemService.deleteItem(itemId);
         return "redirect:/admin/catalog";
     }

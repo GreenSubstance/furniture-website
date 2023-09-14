@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="header">
+  <div class="container">
+    <div class="header_inner">
+      <div class="header_logo">
+        <img th:src="@{/img/logo.png}" alt="Лого">
+      </div>
+      <ul class="header_items">
+        <li>
+          <div class="header_title">
+            Оранжерея мебели
+          </div>
+        </li>
+        <li>
+          <nav class="nav">
+            <a class="nav_link" href="/">Главная</a>
+            <a class="nav_link" href="/catalog">Каталог</a>
+            <a class="nav_link" sec:authorize="hasAuthority('ADMIN')" href="/admin">Редактор</a>
+            <a class="nav_link" th:unless="${#httpServletRequest.remoteUser == null}" href="/user/profile">Профиль</a>
+            <div th:unless="${#httpServletRequest.remoteUser == null}" class="nav_signedin">
+              <a class="nav_link"  th:inline="text">Signed in as: [[${#httpServletRequest.remoteUser}]]!</a>
+              <form class="nav_link" th:action="@{/logout}" method="post">
+                <input th:style="'color: black'" type="submit" value="Sign Out"/>
+              </form>
+            </div>
+            <a class="nav_link" th:unless="${#httpServletRequest.remoteUser == null}" href="/cart"><img th:src="@{/img/cart.png}" alt="Корзина"></a>
+            <a class="nav_link" th:if="${#httpServletRequest.remoteUser == null}" href="/login">Log in</a>
+          </nav>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
