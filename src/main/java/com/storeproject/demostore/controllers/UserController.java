@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/profile")
     public String getProfile(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("orders", orderService.getOrdersByUser(user));
-        model.addAttribute(new UserDto());
+        model.addAttribute("userInfo", new UserDto());
         return "profile";
     }
 
@@ -34,10 +34,7 @@ public class UserController {
                                 @ModelAttribute("userInfo") UserDto userInfo) {
 
         String result = userService.updateProfile(user, userInfo);
-        model.addAttribute("message", "t");
-        System.out.println(userInfo);
-        System.out.println(user);
-        System.out.println(result);
+        model.addAttribute("message", result);
         return "redirect:/user/profile";
     }
 }

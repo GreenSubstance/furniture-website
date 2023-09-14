@@ -18,10 +18,10 @@
 
 <div class="profile">
     <div class="container">
-        <form th:action="@{/user/profile}" method="post">
-            <div><label> User Name : <input type="text" name="newUsername"/> </label></div>
-            <div><label> Password: <input type="password" name="newPassword"/> </label></div>
-            <div><label> Email: <input type="email" name="newEmail"/> </label></div>
+        <form th:action="@{/user/profile}" method="post" th:object="${userInfo}">
+            <div><label> User Name : <input type="text" name="newUsername" th:field="*{username}"/> </label></div>
+            <div><label> Password: <input type="password" name="newPassword" th:field="*{password}"/> </label></div>
+            <div><label> Email: <input type="email" name="newEmail" th:field="*{email}"/> </label></div>
             <div><input type="submit" class="btn" value="Edit"/></div>
         </form>
 
