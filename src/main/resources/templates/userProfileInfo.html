@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragemnt="commonHead">
+<head>
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2&family=Lobster&family=Marck+Script&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
@@ -13,11 +14,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
+
+    <title th:text="${title} + ' | Furniture Orangery'"></title>
 </head>
 
 <body>
-    <div>
 
-    </div>
+<!--Header-->
+
+<header th:insert="blocks/header :: header" class="header"></header>
+
+<!--Profile-->
+
+<div class="container">
+    <form th:action="@{/user/profile}" method="post" th:object="${userInfo}">
+        <div><label> User Name : <input type="text" name="newUsername" th:field="*{username}"/> </label></div>
+        <div><label> Password: <input type="password" name="newPassword" th:field="*{password}"/> </label></div>
+        <div><label> Email: <input type="email" name="newEmail" th:field="*{email}"/> </label></div>
+        <div><input type="submit" class="btn" value="Edit"/></div>
+    </form>
+</div>
+
 </body>
 </html>
